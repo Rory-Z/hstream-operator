@@ -19,6 +19,12 @@ jobs:
       with:
         minikube version: 'v1.26.1'
         kubernetes version: 'v1.25.0'
+    
+    - name: Install rqlite cluster
+      run: |
+        curl -s https://raw.githubusercontent.com/rqlite/kubernetes-configuration/master/service.yaml -o rqlite-service.yaml
+        kubectl apply -f rqlite-service.yaml
+        
     - name: Checkout
       uses: actions/checkout@v3
 
