@@ -34,7 +34,7 @@ func CreateDefaultCR() *appsv1alpha1.HStreamDB {
 				Spec: corev1.PersistentVolumeClaimSpec{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							corev1.ResourceStorage: resource.MustParse("1Gi"),
+							corev1.ResourceStorage: resource.MustParse("0Gi"),
 						},
 					},
 				},
