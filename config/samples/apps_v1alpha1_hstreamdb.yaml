@@ -14,7 +14,7 @@ spec:
       storageClassName: 'hstore'
       resources:
         requests:
-          storage: 1G
+          storage: 0
 
   config:
     metadata-replicate-across: 1
