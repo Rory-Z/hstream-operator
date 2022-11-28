@@ -58,7 +58,5 @@ jobs:
         ginkgo run ./...
 
     - name: Run unit tests that depend on realy k8s cluster
-      env:
-        USE_EXISTING_CLUSTER: "true"
       # set label filter 'k8s' to ignore the test cases that don't depond on realy k8s cluster
-      run: ginkgo run controllers/ --label-filter 'k8s'
+      run: USE_EXISTING_CLUSTER=true ginkgo run controllers/ --label-filter k8s
