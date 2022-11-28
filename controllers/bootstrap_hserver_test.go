@@ -16,6 +16,8 @@ import (
 // set env: export USE_EXISTING_CLUSTER=true
 // run the test: ginkgo run --label-filter 'k8s'
 var _ = Describe("BootstrapHServer", Label("k8s"), func() {
+	timeout := 10 * time.Minute
+
 	var hdb *appsv1alpha1.HStreamDB
 	var requeue *requeue
 	addServices := addServices{}
@@ -55,11 +57,11 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 				},
 			}
 			if err := checkPodRunningStatus(ctx, k8sClient, hdb, sts); err != nil {
-				By(fmt.Sprint("CcheckPodRunningStatus failed. ", err.Error()))
+				By(fmt.Sprint("CheckPodRunningStatus failed. ", err.Error()))
 				return false
 			}
 			return true
-		}, 5*time.Minute, 10*time.Second).Should(BeTrue())
+		}, timeout, 10*time.Second).Should(BeTrue())
 	})
 
 	AfterEach(func() {
@@ -74,7 +76,7 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 				return true
 			}
 			return false
-		}, 5*time.Minute, 10*time.Second).Should(BeTrue())
+		}, timeout, 10*time.Second).Should(BeTrue())
 
 		Expect(hdb.Status.HStoreConfigured).To(BeTrue())
 
@@ -90,11 +92,11 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 				},
 			}
 			if err := checkPodRunningStatus(ctx, k8sClient, hdb, sts); err != nil {
-				By(fmt.Sprint("CcheckPodRunningStatus failed. ", err.Error()))
+				By(fmt.Sprint("CheckPodRunningStatus failed. ", err.Error()))
 				return false
 			}
 			return true
-		}, 5*time.Minute, 10*time.Second).Should(BeTrue())
+		}, timeout, 10*time.Second).Should(BeTrue())
 
 		By("Bootstrap hserver")
 		Eventually(func() bool {
@@ -103,7 +105,7 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 				return true
 			}
 			return false
-		}, 5*time.Minute, 10*time.Second).Should(BeTrue())
+		}, timeout, 10*time.Second).Should(BeTrue())
 
 		Expect(hdb.Status.HServerConfigured).To(BeTrue())
 	})
