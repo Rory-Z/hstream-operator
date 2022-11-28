@@ -16,7 +16,7 @@ import (
 // set env: export USE_EXISTING_CLUSTER=true
 // run the test: ginkgo run --label-filter 'k8s'
 var _ = Describe("BootstrapHServer", Label("k8s"), func() {
-	timeout := 10 * time.Minute
+	timeout := 5 * time.Minute
 
 	var hdb *appsv1alpha1.HStreamDB
 	var requeue *requeue
