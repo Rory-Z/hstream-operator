@@ -24,14 +24,8 @@ jobs:
       id: minikube
       uses: medyagh/setup-minikube@latest
       with:
-        # Choose a specific version of minikube, "latest" for the latest stable build, or "HEAD" for the latest development build
-        minikube-version: 'v1.26.1'
-        # Choose a specific driver, one of: docker, none, podman, virtualbox, parallels, vmwarefusion, hyperkit, vmware, ssh
-        driver: 'none' 
-        # Choose a specific container-runtime, one of: docker, containerd, cri-o
-        container-runtime: 'containerd'
-        # Choose a specific version of Kubernetes, "stable" for the latest stable build, or "latest" for the latest development build
-        kubernetes-version: 'v1.25.0'      
+        driver: none
+        container-runtime: containerd
         # CNI plug-in to use. Valid options: auto, bridge, calico, cilium, flannel, kindnet, or path to a CNI manifest
         cni: flannel
     
