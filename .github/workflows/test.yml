@@ -20,12 +20,21 @@ jobs:
         sudo wget https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
         sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
 
-    - name: Setup Minikube Kubernetes Cluster
-      uses: manusa/actions-setup-minikube@v2.7.1
+    - name: setup-minikube
+      # You may pin to the exact commit or the version.
+      # uses: medyagh/setup-minikube@b127ace2ffdece4eb28e7dedb9da39f495ab7af0
+      uses: medyagh/setup-minikube@v0.0.8
       with:
-        minikube version: 'v1.26.1'
-        kubernetes version: 'v1.25.0'
-        start args: '--driver=docker --cni=flannel --force'
+        # Choose a specific version of minikube, "latest" for the latest stable build, or "HEAD" for the latest development build
+        minikube-version: 'v1.26.1'
+        # Choose a specific driver, one of: docker, none, podman, virtualbox, parallels, vmwarefusion, hyperkit, vmware, ssh
+        driver: 'none' 
+        # Choose a specific container-runtime, one of: docker, containerd, cri-o
+        container-runtime: 'containerd'
+        # Choose a specific version of Kubernetes, "stable" for the latest stable build, or "latest" for the latest development build
+        kubernetes-version: 'v1.25.0'      
+        # CNI plug-in to use. Valid options: auto, bridge, calico, cilium, flannel, kindnet, or path to a CNI manifest
+        cni: flannel
     
     - name: Install rqlite cluster
       run: |
