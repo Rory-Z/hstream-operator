@@ -25,7 +25,7 @@ jobs:
       with:
         minikube version: 'v1.26.1'
         kubernetes version: 'v1.25.0'
-        start args: '--cni=flannel'
+        start args: '--driver=none --cni=flannel'
     
     - name: Install rqlite cluster
       run: |
