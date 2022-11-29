@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"errors"
+	"fmt"
 	appsv1alpha1 "github.com/hstreamdb/hstream-operator/api/v1alpha1"
 	"github.com/hstreamdb/hstream-operator/internal"
 	appsv1 "k8s.io/api/apps/v1"
@@ -63,5 +64,12 @@ func (a bootstrapHServer) getHServerHost(hdb *appsv1alpha1.HStreamDB) (ip string
 		err = errors.New("invalid port")
 		return
 	}
-	return service.Name, port, nil
+
+	// ep. hdbName-hserver-0.svcName.namespace
+	ip = fmt.Sprintf("%s-%d.%s.%s",
+		appsv1alpha1.ComponentTypeHServer.GetResName(hdb.Name),
+		0,
+		service.Name,
+		service.Namespace)
+	return ip, port, nil
 }
