@@ -42,7 +42,7 @@ func (a bootstrapHServer) reconcile(ctx context.Context, r *HStreamDBReconciler,
 
 	logger.Info("Bootstrap hServer")
 	if err = r.AdminClientProvider.GetAdminClient(hdb).BootstrapHServer(ip, port); err != nil {
-		return &requeue{curError: err, delay: 10 * time.Second}
+		return &requeue{message: err.Error(), delay: 10 * time.Second}
 	}
 
 	hdb.Status.HServerConfigured = true
