@@ -131,10 +131,9 @@ jobs:
         ginkgo run --label-filter 'k8s' controllers/
 
     - if: failure()
-      run: kubectl get pods -A
-
-    - if: failure()
-      run: kubectl get event -n kube-system
-
-    - if: failure()
-      run: kubectl get event
+      run: |
+        kubectl get pods -A
+        kubectl get event -n kube-system
+        kubectl get event
+        kubectl describe po hstreamdb-sample-hserver-0
+        kubectl logs hstreamdb-sample-hserver-0
