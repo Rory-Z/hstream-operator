@@ -17,12 +17,13 @@ limitations under the License.
 package controllers
 
 import (
-	"github.com/hstreamdb/hstream-operator/internal/admin"
-	"github.com/hstreamdb/hstream-operator/mock"
 	"os"
 	"path/filepath"
 	"strconv"
 	"testing"
+
+	"github.com/hstreamdb/hstream-operator/internal/admin"
+	"github.com/hstreamdb/hstream-operator/mock"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -79,11 +80,11 @@ var _ = BeforeSuite(func() {
 	clusterReconciler = createTestClusterReconciler()
 })
 
-var _ = AfterSuite(func() {
-	By("tearing down the test environment")
-	err := testEnv.Stop()
-	Expect(err).NotTo(HaveOccurred())
-})
+// var _ = AfterSuite(func() {
+// 	By("tearing down the test environment")
+// 	err := testEnv.Stop()
+// 	Expect(err).NotTo(HaveOccurred())
+// })
 
 func createTestClusterReconciler() *HStreamDBReconciler {
 	return &HStreamDBReconciler{
