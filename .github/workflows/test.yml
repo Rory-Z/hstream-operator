@@ -65,8 +65,13 @@ jobs:
         sudo wget https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
         sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
 
-    - if: matrix.use-existing-cluster
-      run: minikube start --cni="flannel"
+    - name: Setup minikube
+      if: matrix.use-existing-cluster
+      uses: medyagh/setup-minikube@latest
+      with:
+        driver: docker
+        container-runtime: containerd
+        cni: flannel
 
     - name: Install rqlite cluster
       if: matrix.use-existing-cluster
