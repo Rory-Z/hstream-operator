@@ -3,7 +3,6 @@
 
 name: Run hstreamdb operator test case
 
-
 on:
   push:
   pull_request:
@@ -119,13 +118,13 @@ jobs:
         go install github.com/onsi/ginkgo/v2/ginkgo
         
     - name: Run unit tests that don't depend on realy k8s cluster
-      run: 
-        ginkgo run ./...
+      run: ginkgo run ./...
 
     - name: Run unit tests that depend on realy k8s cluster
       env:
         USE_EXISTING_CLUSTER: true
       # set label filter 'k8s' to ignore the test cases that don't depond on realy k8s cluster
-      run: |
-        kubectl get pod
-        ginkgo run --label-filter 'k8s' controllers/
+      run: ginkgo run --label-filter 'k8s' controllers/
+
+    - if: failure()
+      run: kubectl get event
