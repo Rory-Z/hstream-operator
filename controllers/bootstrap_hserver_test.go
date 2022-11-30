@@ -72,7 +72,7 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 		By("Bootstrap hstore")
 		Eventually(func() bool {
 			requeue = bootstrapHStore.reconcile(ctx, clusterReconciler, hdb)
-			if requeue == nil || requeue.curError == nil {
+			if requeue == nil || (requeue.curError == nil && requeue.message == "") {
 				return true
 			}
 			return false
@@ -101,7 +101,7 @@ var _ = Describe("BootstrapHServer", Label("k8s"), func() {
 		By("Bootstrap hserver")
 		Eventually(func() bool {
 			requeue = bootstrapHServer.reconcile(ctx, clusterReconciler, hdb)
-			if requeue == nil || requeue.curError == nil {
+			if requeue == nil || (requeue.curError == nil && requeue.message == "") {
 				return true
 			}
 			return false
