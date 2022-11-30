@@ -129,3 +129,12 @@ jobs:
       run: |
         kubectl get pod
         ginkgo run --label-filter 'k8s' controllers/
+
+    - if: failure()
+      run: kubectl get pods -A
+
+    - if: failure()
+      run: kubectl get event -n kube-system
+
+    - if: failure()
+      run: kubectl get event
