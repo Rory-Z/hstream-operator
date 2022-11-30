@@ -6,13 +6,14 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 func CreateDefaultCR() *appsv1alpha1.HStreamDB {
 	nShards := int32(1)
 	replica := int32(1)
 	hStoreReplica := int32(3)
-
+	storageClassName := "standard"
 	return &appsv1alpha1.HStreamDB{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "HStreamDB",
@@ -32,6 +33,7 @@ func CreateDefaultCR() *appsv1alpha1.HStreamDB {
 			},
 			VolumeClaimTemplate: &corev1.PersistentVolumeClaim{
 				Spec: corev1.PersistentVolumeClaimSpec{
+					StorageClassName: &storageClassName,
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
 							corev1.ResourceStorage: resource.MustParse("0Gi"),
@@ -50,10 +52,10 @@ func CreateDefaultCR() *appsv1alpha1.HStreamDB {
 					Args: []string{
 						"--config-path",
 						"/etc/hstream/config.yaml",
-						"--host",
+						"--bind-address",
 						"0.0.0.0",
-						"--address",
-						"127.0.0.1",
+						"--advertised-address",
+						"$(POD_IP)",
 						"--port",
 						"6570",
 						"--internal-port",
@@ -73,6 +75,20 @@ func CreateDefaultCR() *appsv1alpha1.HStreamDB {
 			},
 			HStore: appsv1alpha1.Component{
 				Replicas: &hStoreReplica,
+				Container: appsv1alpha1.Container{
+					ReadinessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							TCPSocket: &corev1.TCPSocketAction{
+								Port: intstr.FromInt(6440),
+							},
+						},
+						InitialDelaySeconds:           5,
+						TimeoutSeconds:                0,
+						PeriodSeconds:                 5,
+						FailureThreshold:              10,
+						TerminationGracePeriodSeconds: nil,
+					},
+				},
 			},
 			AdminServer: appsv1alpha1.Component{
 				Replicas: &replica,

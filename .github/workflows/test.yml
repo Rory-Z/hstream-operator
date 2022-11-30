@@ -129,7 +129,7 @@ jobs:
                   emptyDir:
         EOF
 
-    - name: Run unit tests that depend on really k8s cluster
+    - name: Run unit tests that depend on existing k8s cluster
       if: matrix.use-existing-cluster
       env:
         USE_EXISTING_CLUSTER: ${{ matrix.use-existing-cluster }}
@@ -144,3 +144,4 @@ jobs:
 
     - if: failure()
       run: kubectl get event
+
